@@ -1,0 +1,73 @@
+scalar Upload
+scalar Json
+scalar Selection
+input Rules {
+    cells: Json,
+    edge: String!,
+    rulesType: String!,
+    advancedProbability: Int,
+}
+
+
+type Query {
+    hello: String!
+    spaceFromFile(
+        file: String!,
+    ): Space!
+    returnSpace(
+        spaceJson: Json!,
+    ): Space!
+    spaceToInclusions(
+        spaceJson: Json!,
+    ): Space!
+    addNucleons(
+        spaceJson: Json!,
+        count: Int!,
+    ): Space!
+    generateSpace(
+        width: Int!,
+        height: Int!,
+        nucleons: Int,
+    ): Space!
+    addInclusions(
+        spaceJson: Json!,
+        type_: String!,
+        count: Int!,
+        size: Int!,
+        onBoundary: Boolean,
+        rules: Rules,
+    ): Space!
+    step(
+        spaceJson: Json!,
+        rules: Rules,
+    ): SpaceChange!
+    toggleSelection(
+        spaceJson: Json!,
+        selection: Selection!,
+        x: Int!,
+        y: Int!,
+    ): Selection!
+    randomSelection(
+        spaceJson: Json!,
+        size: Int!,
+    ): Selection!
+}
+
+type Subscription {
+    counter(add: Int): Int!
+}
+
+type Space {
+    str: String!
+    dataUrl: String!
+    json: Json!
+    boundaries(rules: Rules!, generate: Boolean, size: Int): Space!
+    selectedSpace(selection: Selection!): Space!
+    percentage: String!
+}
+
+type SpaceChange {
+    newSpace: Space!,
+    canChange: Boolean!,
+    changes: Json!,
+}
